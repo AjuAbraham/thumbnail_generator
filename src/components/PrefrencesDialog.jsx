@@ -125,7 +125,7 @@ const PrefrencesDialog = ({
               </SelectContent>
             </Select>
           </div>
-          <div className="grid gap-2">
+          {/* <div className="grid gap-2">
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="includeText"
@@ -159,7 +159,7 @@ const PrefrencesDialog = ({
                 />
               </div>
             )}
-          </div>
+          </div> */}
         </div>
         <DialogFooter>
           <Button

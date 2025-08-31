@@ -65,28 +65,26 @@ export async function POST(request) {
         { status: 400 }
       );
     }
-    const formattedPrompt = enhanceQueryPrompt
-      .replace("{genre}", genre)
-      .replace("{includeText}", includeText.toString())
-      .replace(
-        "{textContent}",
-        textContent || "Generate relevant text if needed"
-      );
-    // const client = new OpenAI();
-    // const response = await client.chat.completions.create({
-    //   model: "gpt-4.1-mini",
-    //   messages: [
-    //     {
-    //       role: "system",
-    //       content: formattedPrompt,
-    //     },
-    //     {
-    //       role: "user",
-    //       content: userQuery,
-    //     },
-    //   ],
-    // });
-    // const enhancedQuery = response.choices[0].message.content;
+    const formattedPrompt = enhanceQueryPrompt({
+      genre,
+      includeText,
+      textContent: textContent || "Generate relevant text if needed",
+    });
+    const client = new OpenAI();
+    const response = await client.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content: formattedPrompt,
+        },
+        {
+          role: "user",
+          content: userQuery,
+        },
+      ],
+    });
+    const enhancedQuery = response.choices[0].message.content;
     // const thumbnailGenerationClient = new OpenAI({
     //   apiKey: process.env.GEMINI_API_KEY,
     //   baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/",
@@ -110,7 +108,7 @@ export async function POST(request) {
             content: [
               {
                 type: "text",
-                text: `${userQuery}\n\n${referenceThumbnailsText}`,
+                text: `${enhancedQuery}\n\n${referenceThumbnailsText}`,
               },
               ...(imageUrl
                 ? [
@@ -120,10 +118,10 @@ export async function POST(request) {
                     },
                   ]
                 : []),
-              ...(channels || []).map((url) => ({
-                type: "image_url",
-                image_url: { url },
-              })),
+              // ...(channels || []).map((url) => ({
+              //   type: "image_url",
+              //   image_url: { url },
+              // })),
             ],
           },
         ],
@@ -158,7 +156,6 @@ export async function POST(request) {
                   {
                     width,
                     height,
-                    // aspectRatio: ratio.replace(":", "-"),
                     cropMode: "force",
                     quality: 90,
                   },

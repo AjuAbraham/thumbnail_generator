@@ -59,7 +59,7 @@ const ChannelContext = ({ channels, setChannels }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
-      className="w-80 h-fit bg-slate-800/80 backdrop-blur-md rounded-xl p-8 border border-slate-700 hover:shadow-lg hover:shadow-blue-900/20 transition-shadow duration-300"
+      className="w-90 h-fit bg-slate-800/80 backdrop-blur-md rounded-xl p-8 border border-slate-700 hover:shadow-lg hover:shadow-blue-900/20 transition-shadow duration-300"
     >
       <div className="flex items-center mb-6">
         <div className="w-12 h-12 bg-gradient-to-br from-blue-900 to-blue-800 rounded-lg flex items-center justify-center mr-4">

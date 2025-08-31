@@ -60,17 +60,19 @@ export default function Home() {
   const [thumbnailPreferences, setThumbnailPreferences] = useState({
     aspectRatio: "16:9",
     genre: "general",
-    includeText: false,
-    textContent: "",
+    // includeText: false,
+    // textContent: "",
   });
   const abortController = new AbortController();
   const isImagesGenerated = Object.keys(generatedImage).length > 0;
   const handleGenerateImage = async () => {
-    if (previewUrl && imagePrompt.trim()) {
-      setShowPreferencesDialog(true);
-    } else {
-      alert("Please upload an image and provide a description.");
-    }
+    setShowPreferencesDialog(true);
+
+    // if (previewUrl && imagePrompt.trim()) {
+    //   setShowPreferencesDialog(true);
+    // } else {
+    //   alert("Please upload an image and provide a description.");
+    // }
   };
 
   const handleDragOver = useCallback((e) => {
@@ -141,13 +143,23 @@ export default function Home() {
       setProgress(0);
     }
   };
-  const handleDownload = (url, fileName) => {
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleDownload = async (url, fileName) => {
+    try {
+      const response = await fetch(url, { mode: "cors" });
+      const blob = await response.blob();
+      const blobUrl = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      URL.revokeObjectURL(blobUrl); // cleanup
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
   };
   return (
     <div className="min-h-screen bg-slate-900 text-gray-200">
@@ -182,7 +194,7 @@ export default function Home() {
             </motion.div>
 
             {/* Cards Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-8 mb-12">
+            <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-20 mb-12">
               {/* Channel Notebook Card */}
               <ChannelContext channels={channels} setChannels={setChannels} />
 
