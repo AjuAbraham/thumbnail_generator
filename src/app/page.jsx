@@ -59,7 +59,7 @@ export default function Home() {
   const [showPreferencesDialog, setShowPreferencesDialog] = useState(false);
   const [thumbnailPreferences, setThumbnailPreferences] = useState({
     aspectRatio: "16:9",
-    genre: "general",
+    genre: "tech",
     // includeText: false,
     // textContent: "",
   });

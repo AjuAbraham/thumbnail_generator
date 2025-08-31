@@ -30,6 +30,11 @@ const PrefrencesDialog = ({
 }) => {
   const submitPreferences = async () => {
     try {
+      if (!thumbnailPreferences.aspectRatio || !thumbnailPreferences.genre) {
+        alert("Please select both Aspect Ratio and Genre before proceeding.");
+        return; // Stop submission
+      }
+
       setShowPreferencesDialog(false);
       setIsGeneratingImage(true);
       let thumbnailUrls = [];

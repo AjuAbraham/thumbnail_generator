@@ -108,7 +108,7 @@ export async function POST(request) {
             content: [
               {
                 type: "text",
-                text: `${enhancedQuery}\n\n${referenceThumbnailsText}`,
+                text: `${userQuery}\n\n${referenceThumbnailsText}`,
               },
               ...(imageUrl
                 ? [
