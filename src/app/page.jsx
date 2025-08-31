@@ -12,7 +12,6 @@ import {
   ImageKitUploadNetworkError,
   upload,
 } from "@imagekit/next";
-import ChatInterface from "@/components/ChatInterface";
 import ChannelContext from "@/components/ChannelContext";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
