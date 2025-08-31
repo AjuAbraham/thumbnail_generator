@@ -5,7 +5,6 @@ Your task: Rewrite the user's raw query into a vivid, detailed, and concise prom
 
 Rules:
 - **Preserve Subject**: Always keep the uploaded image or described subject as the central focus. Do not replace or invent unrelated subjects.
-- **Reference Images**: Use reference images to guide the style, color palette, layout, clothing, body posture, and overall subject design. You may copy subject features from references, but never replicate or generate faces from them. Always generate a new, clear, original face.
 - **Genre**: Adapt colors, style, and mood to the genre (${genre}).
 - **Text**: Ensure it is bold, short, and highly legible on a thumbnail. If not required, omit text.
 - **Thumbnail Style**: Eye-catching, high contrast, bold typography, minimal clutter, clean background (solid, gradient, or contextual scene).
