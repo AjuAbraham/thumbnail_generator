@@ -21,35 +21,37 @@ import PrefrencesDialog from "@/components/PrefrencesDialog";
 export default function Home() {
   const [imagePrompt, setImagePrompt] = useState("");
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
-  const [generatedImage, setGeneratedImage] = useState({
-    filePath:
-      "/thumbnails/gaming/thumbnail_gaming_1756628967637_0_sw2TnnbC2.png",
-    originalUrl:
-      "https://ik.imagekit.io/2kdc1l5yt/thumbnails/gaming/thumbnail_gaming_1756628967637_0_sw2TnnbC2.png",
-    transformedUrls: [
-      {
-        aspectRatio: "16:9",
-        url: "https://ik.imagekit.io/2kdc1l5yt/tr:w-1280,h-720,ar-16-9,cm-force,q-90/thumbnails/gaming/thumbnail_gaming_1756628967637_0_sw2TnnbC2.png",
-      },
-      {
-        aspectRatio: "4:3",
-        url: "https://ik.imagekit.io/2kdc1l5yt/tr:w-1024,h-768,ar-4-3,cm-force,q-90/thumbnails/gaming/thumbnail_gaming_1756628967637_0_sw2TnnbC2.png",
-      },
-      {
-        aspectRatio: "1:1",
-        url: "https://ik.imagekit.io/2kdc1l5yt/tr:w-1080,h-1080,ar-1-1,cm-force,q-90/thumbnails/gaming/thumbnail_gaming_1756628967637_0_sw2TnnbC2.png",
-      },
-      {
-        aspectRatio: "9:16",
-        url: "https://ik.imagekit.io/2kdc1l5yt/tr:w-720,h-1280,ar-9-16,cm-force,q-90/thumbnails/gaming/thumbnail_gaming_1756628967637_0_sw2TnnbC2.png",
-      },
-    ],
-    metadata: {
-      genre: "gaming",
-      textContent: null,
-      requestedAspectRatio: "all",
-    },
-  });
+  const [channels, setChannels] = useState([]);
+  const [generatedImage, setGeneratedImage] = useState({});
+  // const [generatedImage, setGeneratedImage] = useState({
+  //   filePath:
+  //     "/thumbnails/gaming/thumbnail_gaming_1756628967637_0_sw2TnnbC2.png",
+  //   originalUrl:
+  //     "https://ik.imagekit.io/2kdc1l5yt/thumbnails/gaming/thumbnail_gaming_1756628967637_0_sw2TnnbC2.png",
+  //   transformedUrls: [
+  //     {
+  //       aspectRatio: "16:9",
+  //       url: "https://ik.imagekit.io/2kdc1l5yt/tr:w-1280,h-720,ar-16-9,cm-force,q-90/thumbnails/gaming/thumbnail_gaming_1756628967637_0_sw2TnnbC2.png",
+  //     },
+  //     {
+  //       aspectRatio: "4:3",
+  //       url: "https://ik.imagekit.io/2kdc1l5yt/tr:w-1024,h-768,ar-4-3,cm-force,q-90/thumbnails/gaming/thumbnail_gaming_1756628967637_0_sw2TnnbC2.png",
+  //     },
+  //     {
+  //       aspectRatio: "1:1",
+  //       url: "https://ik.imagekit.io/2kdc1l5yt/tr:w-1080,h-1080,ar-1-1,cm-force,q-90/thumbnails/gaming/thumbnail_gaming_1756628967637_0_sw2TnnbC2.png",
+  //     },
+  //     {
+  //       aspectRatio: "9:16",
+  //       url: "https://ik.imagekit.io/2kdc1l5yt/tr:w-720,h-1280,ar-9-16,cm-force,q-90/thumbnails/gaming/thumbnail_gaming_1756628967637_0_sw2TnnbC2.png",
+  //     },
+  //   ],
+  //   metadata: {
+  //     genre: "gaming",
+  //     textContent: null,
+  //     requestedAspectRatio: "all",
+  //   },
+  // });
   const [dragOver, setDragOver] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -183,9 +185,9 @@ export default function Home() {
             {/* Cards Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-8 mb-12">
               {/* Channel Notebook Card */}
-              <ChannelContext />
+              <ChannelContext channels={channels} setChannels={setChannels} />
 
-              {/* Banana Image Lab Card */}
+              {/*  Image Lab Card */}
 
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -198,7 +200,7 @@ export default function Home() {
                     <Palette className="h-6 w-6 text-gray-200" />
                   </div>
                   <h2 className="text-2xl font-bold text-gray-200">
-                    Banana Image Lab
+                    Image Lab
                   </h2>
                 </div>
                 <p className="text-gray-400 mb-6">
@@ -296,11 +298,28 @@ export default function Home() {
                   className="w-full bg-blue-900 hover:bg-blue-800 text-gray-200 font-medium py-3 flex items-center justify-center space-x-2"
                   data-testid="button-generate-image"
                 >
-                  <Wand2 className="h-5 w-5" />
-                  <span>Generate Image</span>
+                  {isGeneratingImage ? (
+                    <div className="flex items-center space-x-2">
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{
+                          duration: 1,
+                          repeat: Infinity,
+                          ease: "linear",
+                        }}
+                        className="w-5 h-5 border-2 border-gray-200 border-t-transparent rounded-full"
+                      />
+                      <span>Generating...</span>
+                    </div>
+                  ) : (
+                    <>
+                      <Wand2 className="h-5 w-5" />
+                      <span>Generate Image</span>
+                    </>
+                  )}
                 </Button>
                 <AnimatePresence>
-                  {isImagesGenerated && !setIsGeneratingImage ? (
+                  {!isImagesGenerated && isGeneratingImage ? (
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
@@ -406,6 +425,7 @@ export default function Home() {
           setThumbnailPreferences={setThumbnailPreferences}
           previewUrl={previewUrl}
           imagePrompt={imagePrompt}
+          channels={channels}
         />
       </main>
 

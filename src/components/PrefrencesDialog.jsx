@@ -25,12 +25,19 @@ const PrefrencesDialog = ({
   setIsGeneratingImage,
   setGeneratedImage,
   previewUrl,
-  imagePrompt
+  imagePrompt,
+  channels = [],
 }) => {
   const submitPreferences = async () => {
     try {
       setShowPreferencesDialog(false);
       setIsGeneratingImage(true);
+      let thumbnailUrls = [];
+      if (channels.length > 0) {
+        thumbnailUrls = channels.flatMap((ch) =>
+          ch.thumbnails.map((t) => t.thumbnail)
+        );
+      }
       const response = await fetch("/api/thumbnail", {
         method: "POST",
         headers: {
@@ -39,10 +46,12 @@ const PrefrencesDialog = ({
         body: JSON.stringify({
           imageUrl: previewUrl,
           userQuery: imagePrompt,
+          channels: thumbnailUrls,
           ...thumbnailPreferences,
         }),
       });
       const result = await response.json();
+
       const uploadedImages = result.uploadedImages;
       if (uploadedImages?.length > 0) {
         setGeneratedImage(uploadedImages[0]);

@@ -15,6 +15,7 @@ export async function POST(request) {
       userQuery,
       aspectRatio,
       genre,
+      channels,
       includeText,
       textContent,
     } = await request.json();
@@ -94,7 +95,12 @@ export async function POST(request) {
       apiKey: process.env.OPENROUTER_API_KEY,
       baseURL: "https://openrouter.ai/api/v1",
     });
-
+    const referenceThumbnailsText =
+      channels && channels.length > 0
+        ? `Use the following YouTube thumbnail images as style references:\n${channels
+            .map((url, index) => `- Reference ${index + 1}: ${url}`)
+            .join("\n")}`
+        : "No reference thumbnails provided.";
     const generatedResponse =
       await thumbnailGenerationClient.chat.completions.create({
         model: "google/gemini-2.5-flash-image-preview:free",
@@ -102,7 +108,10 @@ export async function POST(request) {
           {
             role: "user",
             content: [
-              { type: "text", text: userQuery },
+              {
+                type: "text",
+                text: `${userQuery}\n\n${referenceThumbnailsText}`,
+              },
               ...(imageUrl
                 ? [
                     {
@@ -111,13 +120,17 @@ export async function POST(request) {
                     },
                   ]
                 : []),
+              ...(channels || []).map((url) => ({
+                type: "image_url",
+                image_url: { url },
+              })),
             ],
           },
         ],
       });
     const aspectRatioMap = {
       "16:9": { width: 1280, height: 720 },
-      "4:5": { width: 1080, height: 1350 },
+      "4:3": { width: 1080, height: 1350 },
       "1:1": { width: 1080, height: 1080 },
       "9:16": { width: 720, height: 1280 },
     };
