@@ -101,7 +101,7 @@ export async function POST(request) {
         : "No reference thumbnails provided.";
     const generatedResponse =
       await thumbnailGenerationClient.chat.completions.create({
-        model: "google/gemini-2.5-flash-image-preview:free",
+        model: "google/gemini-2.5-flash-image-preview",
         messages: [
           {
             role: "user",
