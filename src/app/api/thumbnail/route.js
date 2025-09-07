@@ -65,26 +65,26 @@ export async function POST(request) {
         { status: 400 }
       );
     }
-    const formattedPrompt = enhanceQueryPrompt({
-      genre,
-      includeText,
-      textContent: textContent || "Generate relevant text if needed",
-    });
-    const client = new OpenAI();
-    const response = await client.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        {
-          role: "system",
-          content: formattedPrompt,
-        },
-        {
-          role: "user",
-          content: userQuery,
-        },
-      ],
-    });
-    const enhancedQuery = response.choices[0].message.content;
+    // const formattedPrompt = enhanceQueryPrompt({
+    //   genre,
+    //   includeText,
+    //   textContent: textContent || "Generate relevant text if needed",
+    // });
+    // const client = new OpenAI();
+    // const response = await client.chat.completions.create({
+    //   model: "gpt-4o-mini",
+    //   messages: [
+    //     {
+    //       role: "system",
+    //       content: formattedPrompt,
+    //     },
+    //     {
+    //       role: "user",
+    //       content: userQuery,
+    //     },
+    //   ],
+    // });
+    // const enhancedQuery = response.choices[0].message.content;
     // const thumbnailGenerationClient = new OpenAI({
     //   apiKey: process.env.GEMINI_API_KEY,
     //   baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/",
